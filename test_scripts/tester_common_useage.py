@@ -67,7 +67,9 @@ class Tester(object):
         if self.config["cuda"] >=0:
             condition_labels = condition_labels.cuda()
 
-
+        time_test_file = open('time_test.txt', 'w')
+        total_time = 0.
+        cnt = 0.
         start_time = time.time()
         Gen.eval()
         with torch.no_grad():
@@ -79,7 +81,16 @@ class Tester(object):
                     for i in range(n_class):
                         if self.config["cuda"] >=0:
                             content = content.cuda()
+                        
+                        s_time = time.time()
                         res, _ = Gen(content, condition_labels[i, 0, :])
+                        end_time = time.time()
+                        used_time = end_time-s_time
+                        print(f'used_time={used_time}')
+                        print(f'{used_time}\n', file=time_test_file)
+                        total_time += used_time
+                        cnt += 1
+
                         save_image(denorm(res.data),
                             os.path.join(save_dir, '{}_step{}_s_{}.png'.format(img_name_real, self.config["checkpointStep"],StyleDir[i])),
                             nrow=n_class)  # ,nrow=self.batch_size)
@@ -94,3 +105,7 @@ class Tester(object):
         elapsed = time.time() - start_time
         elapsed = str(datetime.timedelta(seconds=elapsed))
         print("Elapsed [{}]".format(elapsed))
+
+        print(f'avg_time = {total_time/cnt}')
+        print(f'avg_time = {total_time/cnt}', file=time_test_file)
+        time_test_file.close()

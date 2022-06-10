@@ -187,7 +187,11 @@ Neural Rendering Special Interesting Group of SJTU
         sys_state["testImgRoot"]    = config.testImgRoot
         sys_state["specify_sytle"]    = config.specify_sytle
 
-        sys_state["testSamples"]    = os.path.join(env_config["testLogRoot"], sys_state["version"] , "samples")
+        # sys_state["testSamples"]    = os.path.join(env_config["testLogRoot"], sys_state["version"] , "samples")
+        # sys_state["testSamples"]    = os.path.join(env_config["testLogRoot"], sys_state["version"] , "picked-test-images-results") # test result
+        sys_state["testSamples"]    = os.path.join(env_config["testLogRoot"], sys_state["version"] , "picked-test-images-results-for-fid") # test result
+        # sys_state["testSamples"]    = os.path.join(env_config["testLogRoot"], sys_state["version"] , "time_test") # test result
+
         if not os.path.exists(sys_state["testSamples"]):
             os.makedirs(sys_state["testSamples"])
         
